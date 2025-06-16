@@ -1,0 +1,28 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.galerie {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.galerie img {
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  object-fit: cover;
+}
