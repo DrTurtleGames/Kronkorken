@@ -4,22 +4,56 @@
   <meta charset="UTF-8">
   <title>Bildergalerie</title>
   <link rel="stylesheet" href="galerie.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
   <h1>Bildergalerie</h1>
   <div class="galerie">
     <!-- Beispielbilder: Diese musst du mit echten Bildpfaden ersetzen -->
-    <img src="Alle_Galerien/Galerie_Gold/0003.webp" alt="Bild 0003" loading="lazy">
-    <img src="Alle_Galerien/Galerie_Gold/0004.webp" alt="Bild 0004" loading="lazy">
-    <img src="Alle_Galerien/Galerie_Gold/0007.webp" alt="Bild 0007" loading="lazy">
-    <img src="Alle_Galerien/Galerie_Gold/0009.webp" alt="Bild 0009" loading="lazy">
-    <img src="Alle_Galerien/Galerie_Gold/0012.webp" alt="Bild 0012" loading="lazy">
-    <img src="Alle_Galerien/Galerie_Gold/0017.webp" alt="Bild 0017" loading="lazy">
-    <img src="Alle_Galerien/Galerie_Gold/0029.webp" alt="Bild 0029" loading="lazy">
-    <img src="Alle_Galerien/Galerie_Gold/0031.webp" alt="Bild 0031" loading="lazy">
-    <img src="Alle_Galerien/Galerie_Gold/0040.webp" alt="Bild 0040" loading="lazy">
-    <img src="Alle_Galerien/Galerie_Gold/0043.webp" alt="Bild 0043" loading="lazy">
+    <img src="Alle_Galerien/Galerie_Gold/0003.webp" alt="Bild 0003" loading="lazy" onclick="zoom_in(this)">
+    <img src="Alle_Galerien/Galerie_Gold/0004.webp" alt="Bild 0004" loading="lazy" onclick="zoom_in(this)">
+    <img src="Alle_Galerien/Galerie_Gold/0007.webp" alt="Bild 0007" loading="lazy" onclick="zoom_in(this)">
+    <img src="Alle_Galerien/Galerie_Gold/0009.webp" alt="Bild 0009" loading="lazy" onclick="zoom_in(this)">
+    <img src="Alle_Galerien/Galerie_Gold/0012.webp" alt="Bild 0012" loading="lazy" onclick="zoom_in(this)">
+    <img src="Alle_Galerien/Galerie_Gold/0017.webp" alt="Bild 0017" loading="lazy" onclick="zoom_in(this)">
+    <img src="Alle_Galerien/Galerie_Gold/0029.webp" alt="Bild 0029" loading="lazy" onclick="zoom_in(this)">
+    <img src="Alle_Galerien/Galerie_Gold/0031.webp" alt="Bild 0031" loading="lazy" onclick="zoom_in(this)">
+    <img src="Alle_Galerien/Galerie_Gold/0040.webp" alt="Bild 0040" loading="lazy" onclick="zoom_in(this)">
+    <img src="Alle_Galerien/Galerie_Gold/0043.webp" alt="Bild 0043" loading="lazy" onclick="zoom_in(this)">
     <!-- Weitere Bilder kannst du hier hinzufügen -->
+  </div>
+  <div id="lightbox" onclick="zoom_out()">
+    <div id="lightbox-content" onclick="event.stopPropagation()">
+      <span id="bild-name"></span>
+      <img id="grossbild" src="" alt="Vergrößertes Bild">
+    </div>
   </div>
 </body>
 </html>
+
+<script>
+  function zoom_in(bild) {
+    const lightbox = document.getElementById("lightbox");
+    const grossbild = document.getElementById("grossbild");
+    const bildname = document.getElementById("bild-name");
+
+    grossbild.src = bild.src;
+
+    // Datei extrahieren, z.B. "Galerie_Weiß/0002.webp" → "0002"
+    try {
+      const url = decodeURIComponent(bild.src); // Pfad dekodieren (z.B. ß)
+      const teile = url.split("/");              // z.B. ["https:", "", "...", "Galerie_Weiß", "0002.webp"]
+      const dateiname = teile[teile.length - 1]; // "0002.webp"
+      const nameOhneEndung = dateiname.replace(/\.[^/.]+$/, ''); // entfernt ".webp" o.ä.
+      bildname.textContent = nameOhneEndung;
+    } catch (e) {
+      bildname.textContent = "Unbekannt";
+    }
+
+    lightbox.style.display = "flex";
+  }
+
+  function zoom_out() {
+    document.getElementById("lightbox").style.display = "none";
+  }
+</script>
