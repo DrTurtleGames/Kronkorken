@@ -1,4 +1,12 @@
-    <img src="Alle_Galerien/Galerie_Gemischt/0008.webp" alt="Bild 0008" loading="lazy">
-    <img src="Alle_Galerien/Galerie_Gemischt/0023.webp" alt="Bild 0023" loading="lazy">
-    <img src="Alle_Galerien/Galerie_Gemischt/0026.webp" alt="Bild 0026" loading="lazy">
-    <img src="Alle_Galerien/Galerie_Gemischt/0030.webp" alt="Bild 0030" loading="lazy">
+    <img src="Alle_Galerien/Galerie_Rot/0048.webp" alt="Bild 0048" loading="lazy">
+    <img src="Alle_Galerien/Galerie_Rot/0050.webp" alt="Bild 0050" loading="lazy">
+    <img src="Alle_Galerien/Galerie_Rot/0064.webp" alt="Bild 0064" loading="lazy">
+    <img src="Alle_Galerien/Galerie_Rot/0074.webp" alt="Bild 0074" loading="lazy">
+    <img src="Alle_Galerien/Galerie_Rot/0082.webp" alt="Bild 0082" loading="lazy">
+    <img src="Alle_Galerien/Galerie_Rot/0089.webp" alt="Bild 0089" loading="lazy">
+    <img src="Alle_Galerien/Galerie_Rot/0101.webp" alt="Bild 0101" loading="lazy">
+    <img src="Alle_Galerien/Galerie_Rot/0123.webp" alt="Bild 0123" loading="lazy">
+    <img src="Alle_Galerien/Galerie_Rot/0124.webp" alt="Bild 0124" loading="lazy">
+    <img src="Alle_Galerien/Galerie_Rot/0141.webp" alt="Bild 0141" loading="lazy">
+    <img src="Alle_Galerien/Galerie_Rot/0142.webp" alt="Bild 0142" loading="lazy">
+    <img src="Alle_Galerien/Galerie_Rot/0147.webp" alt="Bild 0147" loading="lazy">

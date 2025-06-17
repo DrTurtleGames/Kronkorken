@@ -63,6 +63,7 @@ p {
 @media (max-width: 600px) {
   body {
     font-size: 17px;
+    padding: 0;
   }
 
   h1 {
@@ -70,5 +71,10 @@ p {
   }
   .galerie-kachel span {
     font-size: 1.4rem;
-}
+  }
+  .galerie-auswahl {
+  gap: 0.5rem;
+  margin: 0 auto;
+  padding: 0.5rem;
+  }
 }
