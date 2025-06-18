@@ -8,7 +8,8 @@
 </head>
 <body>
   <h1>Willkommen zur Kronkorken-Sammlung</h1>
-  <p>~Wähle eine Farbe~</p>
+  <p>~Schöne Galerien~</p>
+
   <div class="galerie-auswahl">
     <a href="galerie_weiß.html" class="galerie-kachel">
       <img src="Thumbnails/galerie_weiß.webp" alt="Galerie 1">
@@ -22,31 +23,121 @@
       <img src="Thumbnails/galerie_blau.webp" alt="Galerie 3">
       <span>Blau</span>
     </a>
-    <a href="galerie_rot.html" class="galerie-kachel">
-      <img src="Thumbnails/galerie_rot.webp" alt="Galerie 4">
-      <span>Rot</span>
-    </a>
-    <a href="galerie_gold.html" class="galerie-kachel">
-      <img src="Thumbnails/galerie_gold.webp" alt="Galerie 5">
-      <span>Gold</span>
-    </a>
-    <a href="galerie_silber.html" class="galerie-kachel">
-      <img src="Thumbnails/galerie_silber.webp" alt="Galerie 6">
-      <span>Silber</span>
-    </a>
-    <a href="galerie_gelb.html" class="galerie-kachel">
-      <img src="Thumbnails/galerie_gelb.webp" alt="Galerie 7">
-      <span>Gelb</span>
-    </a>
-    <a href="galerie_schwarz.html" class="galerie-kachel">
-      <img src="Thumbnails/galerie_schwarz.webp" alt="Galerie 8">
-      <span>Schwarz</span>
-    </a>
-    <a href="galerie_gemischt.html" class="galerie-kachel">
-      <img src="Thumbnails/galerie_gemischt.webp" alt="Galerie 9">
-      <span>Gemischt</span>
-    </a>
-    <!-- Weitere Galerien hier -->
   </div>
+
+  <p>~Beliebteste Filter~</p>
+  <div id="filter">
+    <button data-tag="alle">Alle</button>
+    <button data-tag="test">Test</button>
+    <button data-tag="rot">Rot</button>
+  </div>
+
+  <form id="filterForm">
+    <input type="text" id="tagInput" placeholder="z.B. Bier, Grün, Tier ..." />
+    <button type="submit">Suchen</button>
+  </form>
+
+  <div class="galerie" id="galerie"></div>
+
+  <div id="lightbox" onclick="zoom_out()">
+    <div id="lightbox-content" onclick="event.stopPropagation()">
+      <span id="bild-name"></span>
+      <img id="grossbild" src="" alt="Vergrößertes Bild">
+    </div>
+  </div>
+
+  <script>
+
+    let bilder = [];
+
+    fetch("bilder_tags.json")
+      .then(response => response.json())
+      .then(data => {
+        bilder = data;
+        zeigeBilderMitTag("alle");
+      })
+      .catch(error => {
+        console.error("Fehler beim Laden von bilder_tags.json:", error);
+        document.getElementById("galerie").innerHTML = "<p>Fehler beim Laden der Bilder.</p>";
+      });
+
+    const galerie = document.getElementById('galerie');
+    const form = document.getElementById('filterForm');
+    const tagInput = document.getElementById('tagInput');
+    const filterButtons = document.querySelectorAll('#filter button');
+
+    function zeigeBilderMitTag(tag) {
+      galerie.innerHTML = '';
+
+      let gefiltert = [];
+      if (tag === 'alle') {
+        gefiltert = bilder;
+      } else {
+        gefiltert = bilder.filter(bild =>
+          bild.tags.includes(tag.toLowerCase())
+        );
+      }
+
+      if (gefiltert.length === 0) {
+        galerie.innerHTML = `<p>Keine Bilder gefunden.</p>`;
+        return;
+      }
+
+      gefiltert.forEach(bild => {
+        const img = document.createElement('img');
+        img.src = bild.pfad;
+        img.alt = tag;
+        img.onclick = () => zoom_in(img);
+        galerie.appendChild(img);
+      });
+    }
+
+    // Knöpfe funktionieren lassen
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        zeigeBilderMitTag(button.dataset.tag);
+      });
+    });
+
+    // Manuelles Suchformular
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const tag = tagInput.value.trim().toLowerCase();
+      if (tag) zeigeBilderMitTag(tag);
+    });
+
+    // Standardanzeige (alle)
+    zeigeBilderMitTag('alle');
+
+  function zoom_in(bild) {
+    const lightbox = document.getElementById("lightbox");
+    const grossbild = document.getElementById("grossbild");
+    const bildname = document.getElementById("bild-name");
+
+    grossbild.src = bild.src;
+
+    // Datei extrahieren, z.B. "Galerie_Weiß/0002.webp" → "0002"
+    try {
+      const url = decodeURIComponent(bild.src); // Pfad dekodieren (z.B. ß)
+      const teile = url.split("/");              // z.B. ["https:", "", "...", "Galerie_Weiß", "0002.webp"]
+      const dateiname = teile[teile.length - 1]; // "0002.webp"
+      const nameOhneEndung = dateiname.replace(/\.[^/.]+$/, ''); // entfernt ".webp" o.ä.
+      bildname.textContent = nameOhneEndung;
+    } catch (e) {
+      bildname.textContent = "Unbekannt";
+    }
+
+    lightbox.style.display = "flex";
+  }
+
+  function zoom_out() {
+    document.getElementById("lightbox").style.display = "none";
+  }
+  </script>
+
 </body>
 </html>
+
+
