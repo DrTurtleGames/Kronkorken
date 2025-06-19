@@ -27,14 +27,14 @@
 
   <p>Suchen</p>
   <div id="filter">
-    <button data-tag="alle">Alle</button>
-    <button data-tag="bier">Bier</button>
-    <button data-tag="grün">Grün</button>
+    <button class="tag-button" data-tag="alle">Alle</button>
+    <button class="tag-button" data-tag="bier">Bier</button>
+    <button class="tag-button" data-tag="grün">Grün</button>
   </div>
 
   <form id="filterForm">
     <input type="text" id="tagInput" placeholder="z.B. Bier, Grün, Tier ..." autocomplete="off"/>
-    <button type="submit">Suchen</button>
+    <button type="submit" class="search-button">Suchen</button>
   </form>
 
   <div class="galerie" id="galerie"></div>
@@ -138,8 +138,8 @@
 
   // Textfeld beim Laden leeren
   window.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("tagInput").value = "";});
-  }
+    document.getElementById("tagInput").value = "";
+  });
 
   </script>
 

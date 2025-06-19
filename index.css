@@ -15,7 +15,8 @@ h1 {
 
 p {
   font-size: 1.3rem;
-  margin-bottom: 2rem;
+  margin-top: 3.0rem;
+  margin-bottom: 1.5rem;
   color: #666;
 }
 
@@ -60,10 +61,49 @@ p {
   color: #333;
 }
 
+/* Neue Stile für Tag-Buttons */
+.tag-button {
+  padding: 8px 14px;
+  font-size: 0.95rem;
+  margin: 4px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.tag-button:hover {
+  background-color: #1976d2;
+}
+
+.tag-button.active {
+  background-color: #0d47a1;
+}
+
+#filter {
+  margin-bottom: 2.5rem;
+}
+
+/* Stil für den Suchen-Knopf separat */
+.search-button {
+  padding: 10px 16px;
+  font-size: 1rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.search-button:hover {
+  background-color: #45a049;
+}
 
 /* Suchfeld-Stil */
 #suche {
-  margin-bottom: 20px;
+  margin-bottom: 2.5rem;
 }
 
 #tagEingabe {
@@ -73,25 +113,6 @@ p {
   max-width: 300px;
   border: 1px solid #ccc;
   border-radius: 6px;
-}
-
-button {
-  padding: 10px 15px;
-  font-size: 1rem;
-  border: none;
-  background-color: #4caf50;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-left: 5px;
-}
-
-button:hover {
-  background-color: #45a049;
-}
-
-#filter button.active {
-  background-color: #357a38;
 }
 
 /* Galerie-Layout */
