@@ -33,7 +33,7 @@
   </div>
 
   <form id="filterForm">
-    <input type="text" id="tagInput" placeholder="z.B. Bier, Grün, Tier ..." />
+    <input type="text" id="tagInput" placeholder="z.B. Bier, Grün, Tier ..." autocomplete="off"/>
     <button type="submit">Suchen</button>
   </form>
 
@@ -135,6 +135,12 @@
   function zoom_out() {
     document.getElementById("lightbox").style.display = "none";
   }
+
+  // Textfeld beim Laden leeren
+  window.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("tagInput").value = "";});
+  }
+
   </script>
 
 </body>
