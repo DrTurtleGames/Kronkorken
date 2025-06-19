@@ -54,7 +54,7 @@
       .then(response => response.json())
       .then(data => {
         bilder = data;
-        zeigeBilderMitTag("alle");
+        zeigeBilderMitTag("weiß");
       })
       .catch(error => {
         console.error("Fehler beim Laden von bilder_tags.json:", error);
