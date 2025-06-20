@@ -55,9 +55,9 @@
       // Suche nach Tags
       const eintrag = bilderInfos.find(b => b.pfad === dateiname);
       if (eintrag && eintrag.tags.length > 0) {
-        bildtags.textContent = "Tags: " + eintrag.tags.join(", ");
+        bildtags.textContent = "Stichwörter: " + eintrag.tags.join(", ");
       } else {
-        bildtags.textContent = "Tags: keine vorhanden";
+        bildtags.textContent = "Keine Stichwörter";
       }
 
     } catch (e) {
