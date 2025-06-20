@@ -109,9 +109,6 @@
       if (tag) zeigeBilderMitTag(tag);
     });
 
-    // Standardanzeige (alle)
-    zeigeBilderMitTag('weiß');
-
   function zoom_in(bild) {
     const lightbox = document.getElementById("lightbox");
     const grossbild = document.getElementById("grossbild");
@@ -130,7 +127,7 @@
       bildname.textContent = nameOhneEndung;
 
       // Suche nach Tags
-      const eintrag = bilderInfos.find(b => b.pfad === dateiname);
+      const eintrag = bilder.find(b => b.pfad === dateiname);
       if (eintrag && eintrag.tags.length > 0) {
         bildtags.textContent = "Stichwörter: " + eintrag.tags.join(", ");
       } else {
