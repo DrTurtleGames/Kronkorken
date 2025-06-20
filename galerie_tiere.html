@@ -44,28 +44,49 @@
     <div id="lightbox-content" onclick="event.stopPropagation()">
       <span id="bild-name"></span>
       <img id="grossbild" src="" alt="Vergrößertes Bild">
+      <div id="bild-tags"></div>
     </div>
   </div>
 </body>
 </html>
 
 <script>
+  let bilderInfos = [];
+
+  fetch("bilder_tags.json") // passe Pfad ggf. an
+    .then(response => response.json())
+    .then(data => {
+      bilderInfos = data;
+    });
+
   function zoom_in(bild) {
     const lightbox = document.getElementById("lightbox");
     const grossbild = document.getElementById("grossbild");
     const bildname = document.getElementById("bild-name");
+    const bildtags = document.getElementById("bild-tags");
 
     grossbild.src = bild.src;
 
     // Datei extrahieren, z.B. "Galerie_Weiß/0002.webp" → "0002"
     try {
-      const url = decodeURIComponent(bild.src); // Pfad dekodieren (z.B. ß)
-      const teile = url.split("/");              // z.B. ["https:", "", "...", "Galerie_Weiß", "0002.webp"]
-      const dateiname = teile[teile.length - 1]; // "0002.webp"
-      const nameOhneEndung = dateiname.replace(/\.[^/.]+$/, ''); // entfernt ".webp" o.ä.
+      const url = decodeURIComponent(bild.src);
+      const teile = url.split("/");
+      const dateiname = teile.slice(-2).join("/"); // z.B. "Bilder/0001.webp"
+      const nameOhneEndung = dateiname.split("/").pop().replace(/\.[^/.]+$/, '');
+      
       bildname.textContent = nameOhneEndung;
+
+      // Suche nach Tags
+      const eintrag = bilderInfos.find(b => b.pfad === dateiname);
+      if (eintrag && eintrag.tags.length > 0) {
+        bildtags.textContent = "Tags: " + eintrag.tags.join(", ");
+      } else {
+        bildtags.textContent = "Tags: keine vorhanden";
+      }
+
     } catch (e) {
       bildname.textContent = "Unbekannt";
+      bildtags.textContent = "";
     }
 
     lightbox.style.display = "flex";

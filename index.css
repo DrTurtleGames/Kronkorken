@@ -177,6 +177,13 @@ p {
   border-radius: 4px;
 }
 
+#bild-tags {
+  margin-top: 12px;
+  color: #ddd;
+  font-size: 0.9rem;
+  font-family: sans-serif;
+}
+
 /* Mobile Anpassung */
 @media (max-width: 600px) {
   body {
