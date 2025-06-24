@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Bildergalerie</title>
+  <link rel="stylesheet" href="galerie.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <h1>Seltsames und Seltenes</h1>
+  <div class="galerie">
+    <!-- Beispielbilder: Diese musst du mit echten Bildpfaden ersetzen -->
+    <img src="Bilder/0002.webp" alt="Bild 0002" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0005.webp" alt="Bild 0005" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0011.webp" alt="Bild 0011" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0018.webp" alt="Bild 0018" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0019.webp" alt="Bild 0019" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0028.webp" alt="Bild 0028" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0037.webp" alt="Bild 0037" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0038.webp" alt="Bild 0038" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0045.webp" alt="Bild 0045" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0046.webp" alt="Bild 0046" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0047.webp" alt="Bild 0047" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0051.webp" alt="Bild 0051" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0065.webp" alt="Bild 0065" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0068.webp" alt="Bild 0068" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0075.webp" alt="Bild 0075" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0079.webp" alt="Bild 0079" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0086.webp" alt="Bild 0086" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0103.webp" alt="Bild 0103" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0104.webp" alt="Bild 0104" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0108.webp" alt="Bild 0108" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0109.webp" alt="Bild 0109" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0122.webp" alt="Bild 0122" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0127.webp" alt="Bild 0127" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0135.webp" alt="Bild 0135" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0140.webp" alt="Bild 0140" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0149.webp" alt="Bild 0149" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0152.webp" alt="Bild 0152" loading="lazy" onclick="zoom_in(this)">
+    <img src="Bilder/0162.webp" alt="Bild 0162" loading="lazy" onclick="zoom_in(this)">
+    <!-- Weitere Bilder kannst du hier hinzufügen -->
+  </div>
+  <div id="lightbox" onclick="zoom_out()">
+    <div id="lightbox-content" onclick="event.stopPropagation()">
+      <span id="bild-name"></span>
+      <img id="grossbild" src="" alt="Vergrößertes Bild">
+      <div id="bild-tags"></div>
+    </div>
+  </div>
+</body>
+</html>
+
+<script>
+  let bilderInfos = [];
+
+  fetch("bilder_tags.json") // passe Pfad ggf. an
+    .then(response => response.json())
+    .then(data => {
+      bilderInfos = data;
+    });
+
+  function zoom_in(bild) {
+    const lightbox = document.getElementById("lightbox");
+    const grossbild = document.getElementById("grossbild");
+    const bildname = document.getElementById("bild-name");
+    const bildtags = document.getElementById("bild-tags");
+
+    grossbild.src = bild.src;
+
+    // Datei extrahieren, z.B. "Galerie_Weiß/0002.webp" → "0002"
+    try {
+      const url = decodeURIComponent(bild.src);
+      const teile = url.split("/");
+      const dateiname = teile.slice(-2).join("/"); // z.B. "Bilder/0001.webp"
+      const nameOhneEndung = dateiname.split("/").pop().replace(/\.[^/.]+$/, '');
+      
+      bildname.textContent = nameOhneEndung;
+
+      // Suche nach Tags
+      const eintrag = bilderInfos.find(b => b.pfad === dateiname);
+      if (eintrag && eintrag.tags.length > 0) {
+        bildtags.textContent = "Stichwörter: " + eintrag.tags.join(", ");
+      } else {
+        bildtags.textContent = "Keine Stichwörter";
+      }
+
+    } catch (e) {
+      bildname.textContent = "Unbekannt";
+      bildtags.textContent = "";
+    }
+
+    lightbox.style.display = "flex";
+  }
+
+  function zoom_out() {
+    document.getElementById("lightbox").style.display = "none";
+  }
+</script>
