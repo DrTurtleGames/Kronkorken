@@ -32,10 +32,11 @@
     <button class="tag-button" data-tag="bier">Bier</button>
     <button class="tag-button" data-tag="grün">Grün</button>
     <button class="tag-button" data-tag="krone">Krone</button>
+    <button class="tag-button" data-tag="bison">Bison</button>
   </div>
 
   <form id="filterForm">
-    <input type="text" id="tagInput" placeholder="z.B. Gold, Tier, 0042 ..." autocomplete="off"/>
+    <input type="text" id="tagInput" placeholder="z.B. Gold, Tier, #42 ..." autocomplete="off"/>
     <button type="submit" class="search-button">Suchen</button>
   </form>
 
@@ -70,23 +71,26 @@
     const tagInput = document.getElementById('tagInput');
     const filterButtons = document.querySelectorAll('#filter button');
 
-    function zeigeBilderMitTag(tag) {
+    function zeigeBilderMitTag(input) {
       galerie.innerHTML = '';
 
       let gefiltert = [];
 
-      if (tag === 'alle') {
+      if (input === 'alle') {
         gefiltert = bilder;
-      } else if (/^#\d{1,4}$/.test(tag)) {
-        const nummer = tag.slice(1).padStart(4, '0'); // z. B. "#345" → "0345"
+
+      } else if (/^#\d{1,4}$/.test(input)) {
+        const nummer = input.slice(1).padStart(4, '0'); // z. B. "#345" → "0345"
         const dateiname = `Bilder/${nummer}.webp`;
         const bild = bilder.find(b => b.pfad === dateiname);
         if (bild) {
           gefiltert = [bild];
         }
+
       } else {
+        const tags = input.split(/[\s,]+/).map(t => t.trim().toLowerCase()).filter(t => t !== "");
         gefiltert = bilder.filter(bild =>
-          bild.tags.includes(tag.toLowerCase())
+          tags.every(tag => bild.tags.includes(tag))
         );
       }
 
@@ -98,7 +102,7 @@
       gefiltert.forEach(bild => {
         const img = document.createElement('img');
         img.src = bild.pfad;
-        img.alt = tag;
+        img.alt = input;
         img.onclick = () => zoom_in(img);
         galerie.appendChild(img);
       });
