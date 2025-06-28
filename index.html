@@ -77,8 +77,8 @@
 
       if (tag === 'alle') {
         gefiltert = bilder;
-      } else if (/^\d{1,4}$/.test(tag)) {
-        const nummer = tag.padStart(4, '0'); // z. B. "345" → "0345"
+      } else if (/^#\d{1,4}$/.test(tag)) {
+        const nummer = tag.slice(1).padStart(4, '0'); // z. B. "#345" → "0345"
         const dateiname = `Bilder/${nummer}.webp`;
         const bild = bilder.find(b => b.pfad === dateiname);
         if (bild) {
