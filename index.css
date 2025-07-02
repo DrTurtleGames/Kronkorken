@@ -158,6 +158,23 @@ p {
   max-height: 85vh;
 }
 
+#close-lightbox {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1100;
+}
+
+#close-lightbox:hover {
+  color: #ff6666;
+}
+
 #grossbild {
   width: 100%;
   height: auto;
@@ -211,5 +228,9 @@ p {
 
   .galerie {
     grid-template-columns: repeat(2, 1fr);
+  }
+  #close-lightbox {
+    font-size: 1.6rem;
+    top: -35px;
   }
 }

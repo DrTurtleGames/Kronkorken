@@ -36,7 +36,6 @@ h1 {
   transform: scale(1.03);
 }
 
-
 #lightbox {
   position: fixed;
   top: 0; left: 0;
@@ -52,6 +51,23 @@ h1 {
   position: relative;
   max-width: 85vh;
   max-height: 85vh;
+}
+
+#close-lightbox {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1100;
+}
+
+#close-lightbox:hover {
+  color: #ff6666;
 }
 
 #grossbild {
@@ -95,5 +111,9 @@ h1 {
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
     padding: 0 5px;
+  }
+  #close-lightbox {
+    font-size: 1.6rem;
+    top: -35px;
   }
 }
