@@ -32,61 +32,26 @@
 </html>
 
 <script>
-  let bilderInfos = [];
+  let bilder = [];
 
-  fetch("bilder_tags.json") // passe Pfad ggf. an
+  // JSON laden
+  fetch("bilder_tags.json")
     .then(response => response.json())
     .then(data => {
-      bilderInfos = data;
+      bilder = data;
+      zeigeBilder();
+    })
+    .catch(error => {
+      console.error("Fehler beim Laden von bilder_tags.json:", error);
+      zeigeBilder();
     });
-
-  function zoom_in(bild) {
-    const lightbox = document.getElementById("lightbox");
-    const grossbild = document.getElementById("grossbild");
-    const bildname = document.getElementById("bild-name");
-    const bildtags = document.getElementById("bild-tags");
-
-    grossbild.src = bild.src;
-
-    // Datei extrahieren, z.B. "Galerie_Weiß/0002.webp" → "0002"
-    try {
-      const url = decodeURIComponent(bild.src);
-      const teile = url.split("/");
-      const dateiname = teile.slice(-2).join("/"); // z.B. "Bilder/0001.webp"
-      const nameOhneEndung = dateiname.split("/").pop().replace(/\.[^/.]+$/, '');
-      
-      bildname.textContent = nameOhneEndung;
-
-      // Suche nach Tags
-      const eintrag = bilderInfos.find(b => b.pfad === dateiname);
-      if (eintrag && eintrag.tags.length > 0) {
-        bildtags.textContent = "Stichwörter: " + eintrag.tags.join(", ");
-      } else {
-        bildtags.textContent = "Keine Stichwörter";
-      }
-
-    } catch (e) {
-      bildname.textContent = "Unbekannt";
-      bildtags.textContent = "";
-    }
-
-    lightbox.style.display = "flex";
-  }
-
-  function zoom_out() {
-    document.getElementById("lightbox").style.display = "none";
-  }
 
   const galerie = document.getElementById("galerie");
   const reverseToggle = document.getElementById("reverseToggle");
 
   const anzahlBilder = 830;
 
-
-// ==========================
-// Bilder anzeigen
-// ==========================
-
+  // Bilder anzeigen
   function zeigeBilder() {
 
     galerie.innerHTML = "";
@@ -106,9 +71,7 @@
       start = 1;
       ende = anzahlBilder;
       schritt = 1;
-
     }
-
 
     for (
       let i = start;
@@ -130,58 +93,60 @@
     }
   }
 
-
-// ==========================
-// Toggle
-// ==========================
-
+  // Toggle
   reverseToggle.addEventListener("change", zeigeBilder);
 
-
-// ==========================
-// Lightbox
-// ==========================
-
+  // Lightbox
   function zoom_in(bild) {
 
     const lightbox = document.getElementById("lightbox");
     const grossbild = document.getElementById("grossbild");
     const bildname = document.getElementById("bild-name");
+    const bildtags = document.getElementById("bild-tags");
 
     grossbild.src = bild.src;
 
-    try {
+  // Dateiname
+  const dateiname = bild.src.split("/").pop();
 
-      const url = decodeURIComponent(bild.src);
-      const teile = url.split("/");
-      const dateiname = teile[teile.length - 1];
+  const nameOhneEndung =
+    dateiname.replace(/\.[^/.]+$/, "");
 
-      const nameOhneEndung =
-        dateiname.replace(/\.[^/.]+$/, "");
+  bildname.textContent = nameOhneEndung;
 
-      bildname.textContent = nameOhneEndung;
 
-    } catch (e) {
+  // JSON-Eintrag suchen
+  const eintrag = bilder.find(bildInfo => {
 
-      bildname.textContent = "Unbekannt";
+    const jsonDateiname =
+      bildInfo.pfad.split("/").pop();
 
-    }
+    return jsonDateiname === dateiname;
 
-    lightbox.style.display = "flex";
+  });
+
+  // Tags anzeigen
+  if (eintrag && eintrag.tags && eintrag.tags.length > 0) {
+
+    bildtags.textContent =
+      "Stichwörter: " + eintrag.tags.join(", ");
+
+  } else {
+
+    bildtags.textContent =
+      "Keine Stichwörter";
+
   }
 
 
-  function zoom_out() {
-
-    document.getElementById("lightbox").style.display = "none";
-
-  }
+  lightbox.style.display = "flex";
+}
 
 
-// ==========================
-// Start
-// ==========================
+function zoom_out() {
 
-  zeigeBilder();
+  document.getElementById("lightbox").style.display = "none";
+
+}
 
 </script>
