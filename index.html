@@ -29,7 +29,7 @@
   <div id="filter">
     <button class="tag-button" data-tag="weiß">Weiß</button>
     <button class="tag-button" data-tag="lech">Lech</button>
-    <button class="tag-button" data-tag="bier">Bier</button>
+    <button class="tag-button" data-tag="0% blau">0% Blau</button>
     <button class="tag-button" data-tag="grün">Grün</button>
     <button class="tag-button" data-tag="krone löwe">Krone Löwe</button>
   </div>
@@ -45,86 +45,110 @@
     <div id="lightbox-content" onclick="event.stopPropagation()">
       <span id="bild-name"></span>
       <button id="close-lightbox" onclick="zoom_out()">×</button>
+      <button id="prev-button"
+              class="nav-button"
+              onclick="vorherigesBild(event)">
+      ❮
+      </button>
+      <button id="next-button"
+              class="nav-button"
+              onclick="naechstesBild(event)">
+      ❯
+      </button>
       <img id="grossbild" src="" alt="Vergrößertes Bild">
       <div id="bild-tags"></div>
     </div>
   </div>
+</body>
+</html>
 
-  <script>
+<script>
 
-    let bilder = [];
+  let bilder = [];
+  let aktuellesBild = 0;
 
-    fetch("bilder_tags.json")
-      .then(response => response.json())
-      .then(data => {
-        bilder = data;
-        document.getElementById("galerie").innerHTML = "<p> </p>";
-        //zeigeBilderMitTag(" ");
-      })
-      .catch(error => {
-        console.error("Fehler beim Laden von bilder_tags.json:", error);
-        document.getElementById("galerie").innerHTML = "<p>Fehler beim Laden der Bilder.</p>";
-      });
+  fetch("bilder_tags.json")
+    .then(response => response.json())
+    .then(data => {
+      bilder = data;
+      document.getElementById("galerie").innerHTML = "<p> </p>";
+      //zeigeBilderMitTag(" ");
+    })
+    .catch(error => {
+      console.error("Fehler beim Laden von bilder_tags.json:", error);
+      document.getElementById("galerie").innerHTML = "<p>Fehler beim Laden der Bilder.</p>";
+    });
 
-    const galerie = document.getElementById('galerie');
-    const form = document.getElementById('filterForm');
-    const tagInput = document.getElementById('tagInput');
-    const filterButtons = document.querySelectorAll('#filter button');
+  const galerie = document.getElementById('galerie');
+  const form = document.getElementById('filterForm');
+  const tagInput = document.getElementById('tagInput');
+  const filterButtons = document.querySelectorAll('#filter button');
 
-    function zeigeBilderMitTag(input) {
-      galerie.innerHTML = '';
+  function zeigeBilderMitTag(input) {
+    galerie.innerHTML = '';
 
-      let gefiltert = [];
+    let gefiltert = [];
 
-      if (input === 'alle') {
-        gefiltert = bilder;
+    if (input === 'alle') {
+      gefiltert = bilder;
 
-      } else if (/^#\d{1,4}$/.test(input)) {
-        const nummer = input.slice(1).padStart(4, '0'); // z. B. "#345" → "0345"
-        const dateiname = `Bilder/${nummer}.webp`;
-        const bild = bilder.find(b => b.pfad === dateiname);
-        if (bild) {
-          gefiltert = [bild];
-        }
-
-      } else {
-        const tags = input.split(/[\s,]+/).map(t => t.trim().toLowerCase()).filter(t => t !== "");
-        gefiltert = bilder.filter(bild =>
-          tags.every(tag => bild.tags.includes(tag))
-        );
+    } else if (/^#\d{1,4}$/.test(input)) {
+      const nummer = input.slice(1).padStart(4, '0'); // z. B. "#345" → "0345"
+      const dateiname = `Bilder/${nummer}.webp`;
+      const bild = bilder.find(b => b.pfad === dateiname);
+      if (bild) {
+        gefiltert = [bild];
       }
 
-      if (gefiltert.length === 0) {
-        galerie.innerHTML = `<p>Keine Bilder gefunden.</p>`;
-        return;
-      }
-
-      gefiltert.forEach(bild => {
-        const img = document.createElement('img');
-        img.src = bild.pfad;
-        img.alt = input;
-        img.onclick = () => zoom_in(img);
-        galerie.appendChild(img);
-      });
+    } else {
+      const tags = input.split(/[\s,]+/).map(t => t.trim().toLowerCase()).filter(t => t !== "");
+      gefiltert = bilder.filter(bild =>
+        tags.every(tag => bild.tags.includes(tag))
+      );
     }
 
-    // Knöpfe funktionieren lassen
-    filterButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        filterButtons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-        zeigeBilderMitTag(button.dataset.tag);
-      });
-    });
+    if (gefiltert.length === 0) {
+      galerie.innerHTML = `<p>Keine Bilder gefunden.</p>`;
+      return;
+    }
 
-    // Manuelles Suchformular
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const tag = tagInput.value.trim().toLowerCase();
-      if (tag) zeigeBilderMitTag(tag);
+    gefiltert.forEach(bild => {
+      const img = document.createElement('img');
+      img.src = bild.pfad;
+      img.alt = input;
+      img.onclick = () => zoom_in(img);
+      galerie.appendChild(img);
     });
+  }
+
+  // Knöpfe funktionieren lassen
+  filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      zeigeBilderMitTag(button.dataset.tag);
+    });
+  });
+
+  // Manuelles Suchformular
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const tag = tagInput.value.trim().toLowerCase();
+    if (tag) zeigeBilderMitTag(tag);
+  });
+
 
   function zoom_in(bild) {
+
+    const bilderGalerie = 
+      Array.from(document.querySelectorAll("#galerie img"));
+
+    aktuellesBild = bilderGalerie.indexOf(bild);
+
+    zeigeBildInLightbox(bild);
+  }
+
+  function zeigeBildInLightbox(bild) {
     const lightbox = document.getElementById("lightbox");
     const grossbild = document.getElementById("grossbild");
     const bildname = document.getElementById("bild-name");
@@ -138,11 +162,11 @@
       const teile = url.split("/");
       const dateiname = teile.slice(-2).join("/"); // z.B. "Bilder/0001.webp"
       const nameOhneEndung = dateiname.split("/").pop().replace(/\.[^/.]+$/, '');
-      
+    
       bildname.textContent = nameOhneEndung;
 
-      // Suche nach Tags
-      const eintrag = bilder.find(b => b.pfad === dateiname);
+    // Suche nach Tags
+    const eintrag = bilder.find(b => b.pfad === dateiname);
       if (eintrag && eintrag.tags.length > 0) {
         bildtags.textContent = "Stichwörter: " + eintrag.tags.join(", ");
       } else {
@@ -166,9 +190,40 @@
     document.getElementById("tagInput").value = "";
   });
 
-  </script>
+  function vorherigesBild(event) {
 
-</body>
-</html>
+    event.stopPropagation();
+
+    const bilderGalerie =
+      Array.from(document.querySelectorAll("#galerie img"));
+
+    if (aktuellesBild > 0) {
+
+      aktuellesBild--;
+
+      zeigeBildInLightbox(
+        bilderGalerie[aktuellesBild]
+      );
+    }
+  }
+
+  function naechstesBild(event) {
+
+    event.stopPropagation();
+
+    const bilderGalerie =
+      Array.from(document.querySelectorAll("#galerie img"));
+
+    if (aktuellesBild < bilderGalerie.length - 1) {
+
+      aktuellesBild++;
+
+      zeigeBildInLightbox(
+        bilderGalerie[aktuellesBild]
+      );
+    }
+  }
+
+</script>
 
 
