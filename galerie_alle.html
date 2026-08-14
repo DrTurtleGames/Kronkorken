@@ -24,6 +24,16 @@
     <div id="lightbox-content" onclick="event.stopPropagation()">
       <span id="bild-name"></span>
       <button id="close-lightbox" onclick="zoom_out()">×</button>
+      <button id="prev-button"
+              class="nav-button"
+              onclick="vorherigesBild(event)">
+      ❮
+      </button>
+      <button id="next-button"
+              class="nav-button"
+              onclick="naechstesBild(event)">
+      ❯
+      </button>
       <img id="grossbild" src="" alt="Vergrößertes Bild">
       <div id="bild-tags"></div>
     </div>
@@ -33,6 +43,7 @@
 
 <script>
   let bilder = [];
+  let aktuellesBild = 0;
 
   // JSON laden
   fetch("bilder_tags.json")
@@ -99,6 +110,16 @@
   // Lightbox
   function zoom_in(bild) {
 
+    const bilderGalerie = 
+      Array.from(document.querySelectorAll("#galerie img"));
+
+    aktuellesBild = bilderGalerie.indexOf(bild);
+
+    zeigeBildInLightbox(bild);
+  }
+
+
+  function zeigeBildInLightbox(bild) {
     const lightbox = document.getElementById("lightbox");
     const grossbild = document.getElementById("grossbild");
     const bildname = document.getElementById("bild-name");
@@ -106,47 +127,81 @@
 
     grossbild.src = bild.src;
 
-  // Dateiname
-  const dateiname = bild.src.split("/").pop();
+    // Dateiname
+    const dateiname = bild.src.split("/").pop();
 
-  const nameOhneEndung =
-    dateiname.replace(/\.[^/.]+$/, "");
+    const nameOhneEndung =
+      dateiname.replace(/\.[^/.]+$/, "");
 
-  bildname.textContent = nameOhneEndung;
+    bildname.textContent = nameOhneEndung;
 
 
-  // JSON-Eintrag suchen
-  const eintrag = bilder.find(bildInfo => {
+    // JSON-Eintrag suchen
+    const eintrag = bilder.find(bildInfo => {
 
-    const jsonDateiname =
-      bildInfo.pfad.split("/").pop();
+      const jsonDateiname =
+        bildInfo.pfad.split("/").pop();
 
-    return jsonDateiname === dateiname;
+      return jsonDateiname === dateiname;
 
-  });
+    });
 
-  // Tags anzeigen
-  if (eintrag && eintrag.tags && eintrag.tags.length > 0) {
+    // Tags anzeigen
+    if (eintrag && eintrag.tags && eintrag.tags.length > 0) {
 
-    bildtags.textContent =
-      "Stichwörter: " + eintrag.tags.join(", ");
+      bildtags.textContent =
+        "Stichwörter: " + eintrag.tags.join(", ");
 
-  } else {
+    } else {
 
-    bildtags.textContent =
-      "Keine Stichwörter";
+      bildtags.textContent =
+        "Keine Stichwörter";
 
+    }
+
+    lightbox.style.display = "flex"; 
   }
 
 
-  lightbox.style.display = "flex";
-}
+  function zoom_out() {
+
+    document.getElementById("lightbox").style.display = "none";
+
+  }
+
+  function vorherigesBild(event) {
+
+    event.stopPropagation();
+
+    const bilderGalerie =
+      Array.from(document.querySelectorAll("#galerie img"));
+
+    if (aktuellesBild > 0) {
+
+      aktuellesBild--;
+
+      zeigeBildInLightbox(
+        bilderGalerie[aktuellesBild]
+      );
+    }
+  }
 
 
-function zoom_out() {
+  function naechstesBild(event) {
 
-  document.getElementById("lightbox").style.display = "none";
+    event.stopPropagation();
 
-}
+    const bilderGalerie =
+      Array.from(document.querySelectorAll("#galerie img"));
+
+    if (aktuellesBild < bilderGalerie.length - 1) {
+
+      aktuellesBild++;
+
+      zeigeBildInLightbox(
+        bilderGalerie[aktuellesBild]
+      );
+    }
+  }
 
 </script>

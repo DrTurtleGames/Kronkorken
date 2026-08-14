@@ -36,6 +36,39 @@ h1 {
   transform: scale(1.03);
 }
 
+.nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 45px;
+  height: 65px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+
+  font-size: 2rem;
+  cursor: pointer;
+
+  z-index: 1050;
+  margin: 0;
+}
+
+.nav-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+#prev-button {
+  left: 10px;
+}
+
+#next-button {
+  right: 10px;
+}
+
 #lightbox {
   position: fixed;
   top: 0; left: 0;
