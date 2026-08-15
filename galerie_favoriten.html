@@ -81,7 +81,7 @@
     const dateiname = decodeURIComponent(bild.src).split("/").pop();
     const nameOhneEndung = dateiname.replace(/\.[^/.]+$/, "");
       
-    bildname.textContent = nameOhneEndung;
+    bildname.textContent = "#" + nameOhneEndung;
 
     // Suche nach Tags
     const eintrag = bilderInfos.find(bildInfo => {
@@ -89,8 +89,8 @@
       return jsonDateiname === dateiname;
     });
 
+    bildtags.innerHTML = "";
     if (eintrag && eintrag.tags && eintrag.tags.length > 0) {
-      bildtags.innerHTML = "";
       eintrag.tags.forEach(tag => {
         const chip = document.createElement("span");
         chip.className = "tag-chip";
@@ -98,7 +98,10 @@
         bildtags.appendChild(chip);
       });
     } else {
-      bildtags.textContent = "Keine Stichwörter";
+      const chip = document.createElement("span");
+      chip.className = "tag-chip";
+      chip.textContent = "Keine Stichwörter";
+      bildtags.appendChild(chip);
     }
 
     lightbox.style.display = "flex";

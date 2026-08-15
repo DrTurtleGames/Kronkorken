@@ -134,8 +134,7 @@
       const dateiname = teile[teile.length - 1]; // z.B. "Bilder/0001.webp"
       const nameOhneEndung = dateiname.replace(/\.[^/.]+$/, "");
     
-      bildname.textContent = nameOhneEndung;
-
+      bildname.textContent = "#" + nameOhneEndung;
 
     // JSON-Eintrag suchen
     const eintrag = bilder.find(bildInfo => {
@@ -144,9 +143,8 @@
     });
 
     // Tags anzeigen
+    bildtags.innerHTML = "";
     if (eintrag && eintrag.tags && eintrag.tags.length > 0) {
-
-      bildtags.innerHTML = "";
       eintrag.tags.forEach(tag => {
         const chip = document.createElement("span");
         chip.className = "tag-chip";
@@ -154,7 +152,10 @@
         bildtags.appendChild(chip);
       });
     } else {
-      bildtags.textContent = "Keine Stichwörter";
+      const chip = document.createElement("span");
+      chip.className = "tag-chip";
+      chip.textContent = "Keine Stichwörter";
+      bildtags.appendChild(chip);
     }
 
     } catch (e) {

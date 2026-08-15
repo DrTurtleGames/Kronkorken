@@ -163,7 +163,7 @@
       const dateiname = teile[teile.length - 1]; // z.B. "Bilder/0001.webp"
       const nameOhneEndung = dateiname.replace(/\.[^/.]+$/, "");
     
-      bildname.textContent = nameOhneEndung;
+      bildname.textContent = "#" + nameOhneEndung;
 
     // Suche nach Tags
     const eintrag = bilder.find(bildInfo => {
