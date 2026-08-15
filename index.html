@@ -160,18 +160,29 @@
     try {
       const url = decodeURIComponent(bild.src);
       const teile = url.split("/");
-      const dateiname = teile.slice(-2).join("/"); // z.B. "Bilder/0001.webp"
-      const nameOhneEndung = dateiname.split("/").pop().replace(/\.[^/.]+$/, '');
+      const dateiname = teile[teile.length - 1]; // z.B. "Bilder/0001.webp"
+      const nameOhneEndung = dateiname.replace(/\.[^/.]+$/, "");
     
       bildname.textContent = nameOhneEndung;
 
     // Suche nach Tags
-    const eintrag = bilder.find(b => b.pfad === dateiname);
-      if (eintrag && eintrag.tags.length > 0) {
-        bildtags.textContent = "Stichwörter: " + eintrag.tags.join(", ");
-      } else {
-        bildtags.textContent = "Keine Stichwörter";
-      }
+    const eintrag = bilder.find(bildInfo => {
+      const jsonDateiname = bildInfo.pfad.split("/").pop();
+      return jsonDateiname === dateiname;
+    });
+
+    if (eintrag && eintrag.tags && eintrag.tags.length > 0) {
+
+      bildtags.innerHTML = "";
+      eintrag.tags.forEach(tag => {
+        const chip = document.createElement("span");
+        chip.className = "tag-chip";
+        chip.textContent = tag;
+        bildtags.appendChild(chip);
+      });
+    } else {
+      bildtags.textContent = "Keine Stichwörter";
+    }
 
     } catch (e) {
       bildname.textContent = "Unbekannt";

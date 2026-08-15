@@ -8,6 +8,7 @@
 </head>
 <body>
   <h1>Seltsames und Seltenes</h1>
+  <p><a href="index.html" >Zurück</a></p>
   <div class="galerie">
     <img src="Bilder/0051.webp" alt="Bild 0051" loading="lazy" onclick="zoom_in(this)">
     <img src="Bilder/0096.webp" alt="Bild 0096" loading="lazy" onclick="zoom_in(this)">
@@ -34,6 +35,16 @@
     <div id="lightbox-content" onclick="event.stopPropagation()">
       <span id="bild-name"></span>
       <button id="close-lightbox" onclick="zoom_out()">×</button>
+      <button id="prev-button"
+              class="nav-button"
+              onclick="vorherigesBild(event)">
+      ❮
+      </button>
+      <button id="next-button"
+              class="nav-button"
+              onclick="naechstesBild(event)">
+      ❯
+      </button>
       <img id="grossbild" src="" alt="Vergrößertes Bild">
       <div id="bild-tags"></div>
     </div>
@@ -43,6 +54,7 @@
 
 <script>
   let bilderInfos = [];
+  let aktuellesBild = 0;
 
   fetch("bilder_tags.json") // passe Pfad ggf. an
     .then(response => response.json())
@@ -51,6 +63,12 @@
     });
 
   function zoom_in(bild) {
+    const bilderGalerie = Array.from(document.querySelectorAll(".galerie img"));
+    aktuellesBild = bilderGalerie.indexOf(bild);
+    zeigeBildInLightbox(bild);
+    }
+
+  function zeigeBildInLightbox(bild) {
     const lightbox = document.getElementById("lightbox");
     const grossbild = document.getElementById("grossbild");
     const bildname = document.getElementById("bild-name");
@@ -59,28 +77,55 @@
     grossbild.src = bild.src;
 
     // Datei extrahieren, z.B. "Galerie_Weiß/0002.webp" → "0002"
-    try {
-      const url = decodeURIComponent(bild.src);
-      const teile = url.split("/");
-      const dateiname = teile.slice(-2).join("/"); // z.B. "Bilder/0001.webp"
-      const nameOhneEndung = dateiname.split("/").pop().replace(/\.[^/.]+$/, '');
+    const dateiname = decodeURIComponent(bild.src).split("/").pop();
+    const nameOhneEndung = dateiname.replace(/\.[^/.]+$/, "");
       
-      bildname.textContent = nameOhneEndung;
+    bildname.textContent = nameOhneEndung;
 
-      // Suche nach Tags
-      const eintrag = bilderInfos.find(b => b.pfad === dateiname);
-      if (eintrag && eintrag.tags.length > 0) {
-        bildtags.textContent = "Stichwörter: " + eintrag.tags.join(", ");
-      } else {
-        bildtags.textContent = "Keine Stichwörter";
-      }
+    // Suche nach Tags
+    const eintrag = bilderInfos.find(bildInfo => {
+      const jsonDateiname = bildInfo.pfad.split("/").pop();
+      return jsonDateiname === dateiname;
+    });
 
-    } catch (e) {
-      bildname.textContent = "Unbekannt";
-      bildtags.textContent = "";
+    if (eintrag && eintrag.tags && eintrag.tags.length > 0) {
+      bildtags.innerHTML = "";
+      eintrag.tags.forEach(tag => {
+        const chip = document.createElement("span");
+        chip.className = "tag-chip";
+        chip.textContent = tag;
+        bildtags.appendChild(chip);
+      });
+    } else {
+      bildtags.textContent = "Keine Stichwörter";
     }
 
     lightbox.style.display = "flex";
+  }
+
+
+  function vorherigesBild(event) {
+    event.stopPropagation();
+    const bilderGalerie =
+      Array.from(document.querySelectorAll(".galerie img"));
+    if (aktuellesBild > 0) {
+      aktuellesBild--;
+      zeigeBildInLightbox(
+        bilderGalerie[aktuellesBild]
+      );
+    }
+  }
+
+  function naechstesBild(event) {
+    event.stopPropagation();
+    const bilderGalerie =
+      Array.from(document.querySelectorAll(".galerie img"));
+    if (aktuellesBild < bilderGalerie.length - 1) {
+      aktuellesBild++;
+      zeigeBildInLightbox(
+        bilderGalerie[aktuellesBild]
+      );
+    }
   }
 
   function zoom_out() {

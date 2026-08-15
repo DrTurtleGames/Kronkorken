@@ -8,7 +8,7 @@
 </head>
 <body>
   <h1>Gesamte Kronkorken Sammlung (stand: 12.08.2026)</h1>
-
+  <p><a href="index.html" >Zurück</a></p>
 <div class="sortierung">
   <span>Reihenfolge invertieren:</span>
 
@@ -128,35 +128,38 @@
     grossbild.src = bild.src;
 
     // Dateiname
-    const dateiname = bild.src.split("/").pop();
-
-    const nameOhneEndung =
-      dateiname.replace(/\.[^/.]+$/, "");
-
-    bildname.textContent = nameOhneEndung;
+    try {
+      const url = decodeURIComponent(bild.src);
+      const teile = url.split("/");
+      const dateiname = teile[teile.length - 1]; // z.B. "Bilder/0001.webp"
+      const nameOhneEndung = dateiname.replace(/\.[^/.]+$/, "");
+    
+      bildname.textContent = nameOhneEndung;
 
 
     // JSON-Eintrag suchen
     const eintrag = bilder.find(bildInfo => {
-
-      const jsonDateiname =
-        bildInfo.pfad.split("/").pop();
-
+      const jsonDateiname = bildInfo.pfad.split("/").pop();
       return jsonDateiname === dateiname;
-
     });
 
     // Tags anzeigen
     if (eintrag && eintrag.tags && eintrag.tags.length > 0) {
 
-      bildtags.textContent =
-        "Stichwörter: " + eintrag.tags.join(", ");
-
+      bildtags.innerHTML = "";
+      eintrag.tags.forEach(tag => {
+        const chip = document.createElement("span");
+        chip.className = "tag-chip";
+        chip.textContent = tag;
+        bildtags.appendChild(chip);
+      });
     } else {
+      bildtags.textContent = "Keine Stichwörter";
+    }
 
-      bildtags.textContent =
-        "Keine Stichwörter";
-
+    } catch (e) {
+      bildname.textContent = "Unbekannt";
+      bildtags.textContent = "";
     }
 
     lightbox.style.display = "flex"; 

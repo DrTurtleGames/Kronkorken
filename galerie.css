@@ -12,11 +12,32 @@ h1 {
   margin-bottom: 30px;
 }
 
+p {
+  margin-bottom: 30px;
+}
+
+a {
+  color: #21f385;
+  text-decoration: none;
+  font-size: 1.0em;
+  text-align: left;
+  padding: 8px 14px;
+  margin: 4px;
+  background-color: rgba(0,0,0,0.25);
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
 .galerie {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
-  max-width: 1000px;
+  width: 1000px;
   margin: 0 auto;
   padding: 0 10px;
   box-sizing: border-box;
@@ -124,9 +145,22 @@ h1 {
 
 #bild-tags {
   margin-top: 12px;
-  color: #ddd;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+.tag-chip {
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: rgba(33, 234, 133, 0.25);;
+  color: #fff;
+  border: 3px solid rgba(33, 234, 133, 1.0);
+  border-radius: 20px;
   font-size: 0.9rem;
-  font-family: sans-serif;
+  font-family: Arial, sans-serif;
+  white-space: nowrap;
 }
 
 .sortierung {
@@ -192,6 +226,11 @@ h1 {
   h1 {
     font-size: 1.3rem;
     margin-bottom: 20px;
+  }
+
+  .tag-chip {
+    padding: 4px 8px;
+    font-size: 0.8rem;
   }
 
   .galerie {
