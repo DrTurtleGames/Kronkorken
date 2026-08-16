@@ -178,7 +178,7 @@ p {
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.95);
   display: none;
   align-items: center;
   justify-content: center;
@@ -263,6 +263,10 @@ p {
     font-size: 1.4rem;
   }
 
+  //#tagEingabe {
+  //  width: 80%;
+  //}
+
   .galerie-auswahl {
   gap: 0.5rem;
   margin: 0 auto;
@@ -274,8 +278,8 @@ p {
     font-size: 0.8rem;
   }
 
-  #tagEingabe {
-    width: 80%;
+  #bild-name {
+    font-size: 0.85rem;
   }
 
   .galerie {

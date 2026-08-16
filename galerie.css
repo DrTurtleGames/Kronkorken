@@ -94,7 +94,7 @@ a:hover {
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.95);
   display: none;
   align-items: center;
   justify-content: center;
@@ -244,6 +244,10 @@ a:hover {
   #close-lightbox {
     font-size: 1.6rem;
     top: -35px;
+  }
+
+  #bild-name {
+    font-size: 0.85rem;
   }
 
   /* Blauen Tap-/Fokus-Effekt auf mobilen Geräten entfernen */
