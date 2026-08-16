@@ -50,19 +50,14 @@ p {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-
-  width: 50px;
-  height: 200px;
-
+  width: 100px;
+  height: 60vh;
   border: none;
-  border-radius: 12px;
-
-  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.5);
   color: white;
-
   font-size: 2rem;
   cursor: pointer;
-
   z-index: 1050;
   margin: 0;
 }
@@ -72,11 +67,11 @@ p {
 }
 
 #prev-button {
-  left: 10px;
+  left: -120px;
 }
 
 #next-button {
-  right: 10px;
+  right: -120px;
 }
 
 .galerie-kachel img {
@@ -229,11 +224,16 @@ p {
 }
 
 #bild-tags {
-  margin-top: 12px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
   justify-content: center;
+  margin-top: 12px;
 }
 
 .tag-chip {
@@ -285,6 +285,21 @@ p {
   .galerie {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .nav-button {
+  width: 50px;
+  height: 150px;
+  background: rgba(0, 0, 0, 0.3);
+  }
+
+  #prev-button {
+    left: 10px;
+  }
+
+  #next-button {
+    right: 10px;
+  }
+
   #close-lightbox {
     font-size: 1.6rem;
     top: -35px;
