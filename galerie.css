@@ -65,7 +65,8 @@ a:hover {
   height: 60vh;
   border: none;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
   color: white;
   font-size: 2rem;
   cursor: pointer;
@@ -245,6 +246,7 @@ a:hover {
   width: 50px;
   height: 150px;
   background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 rgba(255, 255, 255, 0.0);
   }
 
   #prev-button {
